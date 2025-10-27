@@ -1,0 +1,71 @@
+<script setup lang='ts'>
+import { LikeOutlined } from '@vicons/antd'
+import { AccessTimeRound, DrawOutlined } from '@vicons/material'
+import { Comp, uni, Utils } from 'delta-comic-core'
+import { isEmpty } from 'es-toolkit/compat'
+import { StyleValue } from 'vue'
+const $props = defineProps<{
+  item: uni.item.Item
+  freeHeight?: boolean
+  disabled?: boolean
+  type?: "default" | "big" | "small"
+  class?: any
+  style?: StyleValue
+}>()
+const $emit = defineEmits<{
+  click: [item: uni.item.Item]
+}>()
+</script>
+
+<template>
+  <Comp.content.UnitCard :="$props" @click="$emit('click', item)">
+    <template #smallTopInfo>
+      <span v-if="item.viewNumber">
+        <VanIcon name="eye-o" class="mr-0.5" size="14px" />
+        <span>{{ item.viewNumber }}</span>
+      </span>
+      <span v-if="item.likeNumber">
+        <NIcon class="mr-0.5" size="14px" color="white">
+          <LikeOutlined />
+        </NIcon>
+        <span>{{ item.likeNumber }}</span>
+      </span>
+      <template v-else>
+        <template v-for="category of item.categories">
+          <span v-if="!isEmpty(category.name)">
+            <VanIcon class="mr-0.5" name="apps-o" size="14px" color="white" />
+            <span>{{ category.name }}</span>
+          </span>
+        </template>
+      </template>
+    </template>
+    <div class="flex gap-0.5 items-center" v-if="type == 'small'">
+      <NIcon color="var(--van-text-color-2)" size="14px">
+        <DrawOutlined />
+      </NIcon>
+      <span class="ml-0.5 text-xs van-ellipsis w-2/3 text-(--van-text-color-2)">
+        {{ item.author[0] }}
+        <template v-if="item.author.length > 1">
+          等联合创作
+        </template>
+      </span>
+    </div>
+    <template v-if="type != 'small'">
+      <div class="flex gap-0.5 **:text-nowrap">
+        <VanTag type="primary" plain v-for="category of item.categories">{{ category.name }}</VanTag>
+      </div>
+      <div class="flex flex-nowrap items-center *:text-nowrap van-ellipsis mt-0.5">
+        <NIcon color="var(--van-text-color-2)" size="14px">
+          <AccessTimeRound />
+        </NIcon>
+        <span class="mr-2">{{ Utils.translate.createDateString(item.$updateTime) }}</span>
+      </div>
+      <div class="flex flex-nowrap items-center *:text-nowrap van-ellipsis">
+        <NIcon color="var(--van-text-color-2)" size="14px">
+          <DrawOutlined />
+        </NIcon>
+        <span v-for="author of item.author" class="mr-2">{{ author }}</span>
+      </div>
+    </template>
+  </Comp.content.UnitCard>
+</template>

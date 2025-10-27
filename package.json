@@ -1,0 +1,64 @@
+{
+  "name": "delta-comic-plugin-cosav",
+  "version": "0.0.1",
+  "description": "何以殁亡",
+  "author": {
+    "name": "wenxig",
+    "email": "wenxinguo12@gmail.com"
+  },
+  "homepage": "https://github.com/wenxig/delta-comic-plugin-cosav",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wenxig/delta-comic-plugin-cosav.git"
+  },
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit -p ./tsconfig.json --composite false"
+  },
+  "dependencies": {
+    "@vicons/antd": "^0.13.0",
+    "@vicons/material": "^0.13.0",
+    "@vueuse/core": "14.0.0",
+    "axios": "^1.12.2",
+    "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.18",
+    "delta-comic-core": "link:../delta-comic-core",
+    "es-toolkit": "^1.40.0",
+    "naive-ui": "^2.43.1",
+    "vant": "^4.9.21",
+    "vue": "^3.5.22",
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.14",
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^24.8.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vitejs/plugin-vue-jsx": "^5.1.1",
+    "browserslist": "^4.26.3",
+    "lightningcss": "^1.30.2",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.3",
+    "unplugin-vue-components": "30.0.0",
+    "vite": "npm:rolldown-vite@^7.1.19",
+    "vite-plugin-external": "^6.2.2",
+    "vite-plugin-monkey": "^7.1.4",
+    "vue-component-type-helpers": "^3.1.1",
+    "vue-tsc": "^3.1.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "npm:rolldown-vite@7.1.19"
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@tailwindcss/oxide",
+      "core-js",
+      "esbuild"
+    ]
+  }
+}
