@@ -1,12 +1,12 @@
-# Delta Comic Plugin Jmcomic - _<span style="font-weight: lighter;font-size:16px">何以哀怮</span>_
+# Delta Comic Plugin Cosav - _<span style="font-weight: lighter;font-size:16px">何以殁亡</span>_
 
-[![GitHub](https://img.shields.io/github/license/wenxig/delta-comic-plugin-jmcomic)](https://raw.githubusercontent.com/wenxig/delta-comic-plugin-jmcomic/main/LICENSE)
+[![GitHub](https://img.shields.io/github/license/wenxig/delta-comic-plugin-cosav)](https://raw.githubusercontent.com/wenxig/delta-comic-plugin-cosav/main/LICENSE)
 
 - [delta-comic](https://github.com/wenxig/delta-comic)的插件
 
 ## 功能
 
-- 提供有关 _Jmcomic **/** 禁漫天堂_ 的相关功能
+- 提供有关 _Cosav **/** cos天堂_ 的相关功能
 
 ## 如何使用
 
@@ -25,4 +25,4 @@
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=wenxig/delta-comic-plugin-jmcomic&type=Date)](https://www.star-history.com/#wenxig/delta-comic-plugin-jmcomic&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=wenxig/delta-comic-plugin-cosav&type=Date)](https://www.star-history.com/#wenxig/delta-comic-plugin-cosav&Date)
