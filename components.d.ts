@@ -12,11 +12,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    BlogLayout: typeof import('./src/components/blogLayout.vue')['default']
-    Buy: typeof import('./src/components/badge/buy.vue')['default']
     Card: typeof import('./src/components/card.vue')['default']
-    CommentRow: typeof import('./src/components/comment/commentRow.vue')['default']
-    Edit: typeof import('./src/components/badge/edit.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NDatePicker: typeof import('naive-ui')['NDatePicker']
@@ -32,25 +28,19 @@ declare module 'vue' {
     NRadio: typeof import('naive-ui')['NRadio']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
     NScrollbar: typeof import('naive-ui')['NScrollbar']
-    NScrollBar: typeof import('naive-ui')['NScrollBar']
     NSelect: typeof import('naive-ui')['NSelect']
     NSpin: typeof import('naive-ui')['NSpin']
     NTag: typeof import('naive-ui')['NTag']
     NThing: typeof import('naive-ui')['NThing']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Select: typeof import('./src/components/title/select.vue')['default']
-    Sender: typeof import('./src/components/comment/sender.vue')['default']
     Tabbar: typeof import('./src/components/tabbar.vue')['default']
-    TabbarBlog: typeof import('./src/components/tabbarBlog.vue')['default']
-    User: typeof import('./src/components/user.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCol: typeof import('vant/es')['Col']
     VanField: typeof import('vant/es')['Field']
     VanIcon: typeof import('vant/es')['Icon']
     VanRow: typeof import('vant/es')['Row']
     VanTag: typeof import('vant/es')['Tag']
-    WeekPromote: typeof import('./src/components/weekPromote.vue')['default']
   }
 }
 
