@@ -8,6 +8,7 @@ import axios, { formToJSON } from 'axios'
 import { cosavStore } from "./store"
 import { cosav } from "./api"
 import Tabbar from "./components/tabbar.vue"
+import Card from "./components/card.vue"
 import { CosavVideoPage } from "./api/page"
 const testAxios = axios.create({
   timeout: 10000,
@@ -29,7 +30,7 @@ definePlugin({
     forks: {
       default: image
     },
-    test: '/photos/1205243/00001.webp'
+    test: '/videos/tmb/30859/0.jpg'
   },
   onBooted: ins => {
     console.log('setup...', ins, ins.api?.api)
@@ -39,6 +40,15 @@ definePlugin({
         const cosKey = 'CosAppMakeBigMoneyCosplayAPPContent'
         const key = MD5(cosKey).toString()
         const keyHex = enc.Utf8.parse(key)
+        ins.interceptors.request.use(async requestConfig => {
+          const key = Date.now().toString()
+          const tokenParam = `CosAppMakeBigMoney,${Math.floor(Date.now() / 1000)}`
+          requestConfig.cosav_key = key
+          requestConfig.headers.set('userParams', '')
+          requestConfig.headers.set('Tokenparam', tokenParam)
+          requestConfig.headers.set('Use-interface', requestConfig.baseURL)
+          return requestConfig
+        })
         ins.interceptors.response.use(res => {
           const decrypt = (cipherText: string) => {
             const dData = AES.decrypt(cipherText, keyHex, {

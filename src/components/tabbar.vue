@@ -51,7 +51,7 @@ const subSource = computed(() => {
       v-slot="{ value }">
       <VanTabs v-model:active="selectTabId" class="size-full *:last:size-full">
         <VanTab v-for="sub of value" :title="sub.name" :name="sub.id" class="size-full">
-          <Comp.Waterfall :source="subSource" class="size-full" v-slot="{ item }">
+          <Comp.Waterfall :source="subSource" class="w-full h-[calc(100%-45px)]" v-slot="{ item }">
             <Card :item free-height type="small" />
           </Comp.Waterfall>
         </VanTab>

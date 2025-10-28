@@ -30,19 +30,11 @@ const $emit = defineEmits<{
         </NIcon>
         <span>{{ item.likeNumber }}</span>
       </span>
-      <template v-else>
-        <template v-for="category of item.categories">
-          <span v-if="!isEmpty(category.name)">
-            <VanIcon class="mr-0.5" name="apps-o" size="14px" color="white" />
-            <span>{{ category.name }}</span>
-          </span>
-        </template>
-      </template>
       <span class="absolute right-1 text-xs">
         {{ item.length }}
       </span>
     </template>
-    <div class="flex gap-0.5 items-center" v-if="type == 'small'">
+    <div class="flex gap-0.5 items-center" v-if="item.author.length&&type == 'small'">
       <NIcon color="var(--van-text-color-2)" size="14px">
         <DrawOutlined />
       </NIcon>

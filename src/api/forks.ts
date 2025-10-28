@@ -1,7 +1,7 @@
 export const image = [
-  "https://api.macintosh-serve.org",
-  "https://api.cosfl-airapi.org",
-  "https://api.cosavtiktok.club"
+  "https://api.macintosh-serve.org/media",
+  "https://api.cosfl-airapi.org/media",
+  "https://api.cosavtiktok.club/media"
 ]
 export const apiGetter = [
   
