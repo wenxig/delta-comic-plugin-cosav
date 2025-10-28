@@ -2,7 +2,7 @@ import type { Style } from '@capacitor/status-bar'
 import { type useMessage, type useLoadingBar, type useDialog } from 'naive-ui'
 import type { Router } from 'vue-router'
 import { uni } from './struct'
-import { Utils } from './utils';
+import { Utils } from './utils'
 import { Component } from 'vue'
 import { ExternalLibKey } from '../external'
 declare global {
@@ -30,6 +30,7 @@ declare module 'axios' {
     __retryCount?: number
     disretry?: boolean
     allowEmpty?: boolean
+    cosav_key?: string
   }
 }
 
@@ -49,4 +50,4 @@ export declare module 'vue-router' {
     force?: boolean
   }
 }
-export {}
+export { }

@@ -1,2 +1,2 @@
 
-export const pluginName = 'jmcomic'
+export const pluginName = 'cosav'
