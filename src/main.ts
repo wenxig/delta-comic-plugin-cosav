@@ -1,13 +1,14 @@
 import "@/index.css"
-import { definePlugin, uni, Utils } from "delta-comic-core"
+import { definePlugin, uni, Utils, type PluginConfigSearchTabbar } from "delta-comic-core"
 import { pluginName } from "./symbol"
 import { AES, MD5, enc, mode, pad } from 'crypto-js'
 import { api, image } from "./api/forks"
-import { fromPairs, inRange, isString } from 'es-toolkit/compat'
+import { inRange, isString } from 'es-toolkit/compat'
 import axios, { formToJSON } from 'axios'
 import { cosavStore } from "./store"
 import { cosav } from "./api"
 import Tabbar from "./components/tabbar.vue"
+import { CosavVideoPage } from "./api/page"
 const testAxios = axios.create({
   timeout: 10000,
   method: 'GET',
@@ -59,19 +60,43 @@ definePlugin({
         return ins
       })
       cosavStore.api.value = api
-      Utils.eventBus.SharedFunction.define(s => jm.api.search.getRandomComics(s).then(v => v.list), pluginName, 'getRandomProvide')
+      Utils.eventBus.SharedFunction.define(s => cosav.api.search.getRandomVideo(s), pluginName, 'getRandomProvide')
     }
   },
   content: {
+    contentPage: {
+      [CosavVideoPage.contentType]: CosavVideoPage,
+
+    },
+    itemCard: {
+      [CosavVideoPage.contentType]: Card,
+    }
   },
   otherProgress: [{
     name: '预加载数据',
     async call(setDescription) {
       setDescription('获取分类 & 推荐等...')
       try {
-        const [] = await Promise.all([
-          
+        const [settings, categories] = await Promise.all([
+          cosav.api.search.getSettings(),
+          cosav.api.search.getVideoCategories()
         ])
+        cosavStore.settings.value = settings
+        for (const page of settings.$index_page) {
+          uni.content.ContentPage.setMainList(pluginName, {
+            content: () => Utils.data.PromiseContent.resolve(page.list),
+            name: page.name,
+            onClick() {
+              return Utils.eventBus.SharedFunction.call('routeToSearch', '')
+            },
+          })
+        }
+        cosavStore.categories.value = categories
+        uni.content.ContentPage.setTabbar(pluginName, ...categories.map(v => (<PluginConfigSearchTabbar>{
+          comp: Tabbar,
+          id: v.CHID,
+          title: v.name
+        })))
         setDescription('成功')
       } catch (error) {
         setDescription('失败')

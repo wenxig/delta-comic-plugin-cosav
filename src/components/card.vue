@@ -38,6 +38,9 @@ const $emit = defineEmits<{
           </span>
         </template>
       </template>
+      <span class="absolute right-1 text-xs">
+        {{ item.length }}
+      </span>
     </template>
     <div class="flex gap-0.5 items-center" v-if="type == 'small'">
       <NIcon color="var(--van-text-color-2)" size="14px">
@@ -66,6 +69,11 @@ const $emit = defineEmits<{
         </NIcon>
         <span v-for="author of item.author" class="mr-2">{{ author }}</span>
       </div>
+    </template>
+    <template #cover>
+      <span class="absolute right-1 bottom-1 text-white text-[10px] px-1 rounded bg-black/70">
+        {{ item.length }}
+      </span>
     </template>
   </Comp.content.UnitCard>
 </template>

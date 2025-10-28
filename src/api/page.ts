@@ -2,11 +2,11 @@ import { pluginName } from "@/symbol"
 import { uni, Utils } from "delta-comic-core"
 
 export class CosavVideoPage extends uni.content.ContentPage {
-  public static contentType = uni.content.ContentPage.toContentType({
+  public static contentType = uni.content.ContentPage.toContentTypeString({
     name: 'video',
     plugin: pluginName
   })
-  override contentType = CosavVideoPage.contentType
+  override contentType = uni.content.ContentPage.toContentType(CosavVideoPage.contentType)
   override comments = Utils.data.Stream.create<uni.comment.Comment>(function* () {
     return
   })

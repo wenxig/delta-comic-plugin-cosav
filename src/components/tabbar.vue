@@ -1,6 +1,5 @@
 <script setup lang='ts'>
-import { jm } from '@/api'
-import { jmStore } from '@/store'
+import { cosav } from '@/api'
 import { useResizeObserver, until } from '@vueuse/core'
 import { Comp, PluginConfigSearchTabbar, Store, Utils } from 'delta-comic-core'
 import { isEmpty } from 'es-toolkit/compat'
@@ -15,12 +14,11 @@ const $router = useRouter()
 
 const list = shallowRef<ComponentExposed<typeof Comp.Waterfall>>()
 const temp = Store.useTemp()
-const orderStoreSaveTemp = temp.$applyRaw(`orderJmStoreSave`, () => new Map<string, Utils.data.RStream<jm.comic.JmItem>>())
-const orderScrollSaveTemp = temp.$applyRaw(`orderJmScoreSave`, () => new Map<string, number>())
+const orderScrollSaveTemp = temp.$applyRaw(`orderCosavScoreSave`, () => new Map<string, number>())
 const containBound = ref<DOMRectReadOnly>()
 useResizeObserver(() => <HTMLDivElement | null>list.value?.scrollParent?.firstElementChild, ([b]) => containBound.value = b.contentRect)
 onMounted(async () => {
-  if (!isEmpty(dataSource.value.data.value)) {
+  if (!isEmpty(subSource.value.data.value)) {
     await until(() => (containBound.value?.height ?? 0) > 8).toBeTruthy()
     list.value?.scrollParent?.scroll(0, orderScrollSaveTemp.get($props.tabbar.id) ?? 0)
   }
@@ -29,17 +27,35 @@ const stop = $router.beforeEach(() => {
   stop()
   orderScrollSaveTemp.set($props.tabbar.id, list.value?.scrollTop ?? 0)
 })
-const dataSource = computed(() => {
-  if (!orderStoreSaveTemp.has($props.tabbar.id))
-    orderStoreSaveTemp.set($props.tabbar.id, jm.api.search.createPromoteStream(Number($props.tabbar.id))
-      .setupData(jmStore.promotes.value?.find(v => v.id == $props.tabbar.id)?.$content ?? []))
-  return orderStoreSaveTemp.get($props.tabbar.id)!
+
+const subCategoriesTemp = temp.$applyRaw(`orderVideoSubCategoriesTemp`, () => new Map<string, Utils.data.PromiseContent<cosav.search.CategoriesSubItem[]>>())
+const subCategories = computed(() => {
+  if (!subCategoriesTemp.has($props.tabbar.id))
+    subCategoriesTemp.set($props.tabbar.id, cosav.api.search.getVideoCategoriesSub($props.tabbar.id))
+  return subCategoriesTemp.get($props.tabbar.id)!
+})
+
+const selectTabId = shallowRef($props.tabbar.id)
+const subCategoriesStreamTemp = temp.$applyRaw(`orderVideoSubCategoriesStreamTemp`, () => new Map<string, Utils.data.RStream<cosav.video.CosavVideo>>())
+const subSource = computed(() => {
+  if (!subCategoriesStreamTemp.has(selectTabId.value))
+    subCategoriesStreamTemp.set(selectTabId.value, cosav.api.search.utils.createCategoryStream(selectTabId.value))
+  return subCategoriesStreamTemp.get(selectTabId.value)!
 })
 </script>
 
 <template>
-  <Comp.Waterfall :source="dataSource" v-slot="{ item }" ref="list">
-    <Card :item free-height type="small"
-      @click="Utils.eventBus.SharedFunction.call('routeToContent', item.contentType, item.id, item.$thisEp.index)" />
-  </Comp.Waterfall>
+  <Comp.Content :source="subCategories" ref="list" class="!size-full">
+    <Comp.Var
+      :value="[{ name: '全部', id: $props.tabbar.id }, ...subCategories.data.value?.map(v => ({ name: v.name, id: v.CHID })) ?? []]"
+      v-slot="{ value }">
+      <VanTabs v-model:active="selectTabId" class="size-full *:last:size-full">
+        <VanTab v-for="sub of value" :title="sub.name" :name="sub.id" class="size-full">
+          <Comp.Waterfall :source="subSource" class="size-full" v-slot="{ item }">
+            <Card :item free-height type="small" />
+          </Comp.Waterfall>
+        </VanTab>
+      </VanTabs>
+    </Comp.Var>
+  </Comp.Content>
 </template>
