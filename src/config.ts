@@ -1,6 +1,6 @@
 import { Store } from 'delta-comic-core'
 import { pluginName } from './symbol'
-export const config = (Store.useConfig().$useCustomConfig(pluginName, {
+export const config = (Store.useConfig().$load(pluginName, {
   doubleImage: {
     type: 'switch',
     info: '漫画阅读时: 同时显示两张图片',

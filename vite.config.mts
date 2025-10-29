@@ -28,7 +28,8 @@ export default defineConfig(({ command }) => ({
         name: 'cosav/cos天堂',
         version: _package.version,
         author: _package.author.name,
-        description: _package.description
+        description: _package.description,
+        require: []
       },
       build: {
         externalGlobals: command == 'serve' ? undefined : {
