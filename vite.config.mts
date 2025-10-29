@@ -25,9 +25,10 @@ export default defineConfig(({ command }) => ({
     monkey({
       entry: 'src/main.ts',
       userscript: {
-        name: 'cosav',
+        name: 'cosav/cos天堂',
         version: _package.version,
         author: _package.author.name,
+        description: _package.description
       },
       build: {
         externalGlobals: command == 'serve' ? undefined : {
@@ -47,18 +48,18 @@ export default defineConfig(({ command }) => ({
       }
     }),
     command == 'build' ? undefined :
-    external({
-      externals: {
-        vue: 'window.$$lib$$.Vue',
-        vant: 'window.$$lib$$.Vant',
-        'naive-ui': 'window.$$lib$$.Naive',
-        axios: 'window.$$lib$$.Axios',
-        'es-toolkit': 'window.$$lib$$.EsKits',
-        'delta-comic-core': 'window.$$lib$$.Dcc',
-        'vue-router': 'window.$$lib$$.VR',
-        'crypto-js': 'window.$$lib$$.Crypto'
-      }
-    })
+      external({
+        externals: {
+          vue: 'window.$$lib$$.Vue',
+          vant: 'window.$$lib$$.Vant',
+          'naive-ui': 'window.$$lib$$.Naive',
+          axios: 'window.$$lib$$.Axios',
+          'es-toolkit': 'window.$$lib$$.EsKits',
+          'delta-comic-core': 'window.$$lib$$.Dcc',
+          'vue-router': 'window.$$lib$$.VR',
+          'crypto-js': 'window.$$lib$$.Crypto'
+        }
+      })
   ],
   resolve: {
     alias: {
