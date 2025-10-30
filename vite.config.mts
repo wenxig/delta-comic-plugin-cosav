@@ -29,7 +29,8 @@ export default defineConfig(({ command }) => ({
         version: _package.version,
         author: _package.author.name,
         description: _package.description,
-        require: []
+        require: ['core'],
+        ['name:ds']: 'cos天堂'
       },
       build: {
         externalGlobals: command == 'serve' ? undefined : {
