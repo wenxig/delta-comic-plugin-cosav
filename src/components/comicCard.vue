@@ -65,10 +65,5 @@ const { comp: { ItemCard } } = requireDepend(coreModule)
         <span v-for="author of item.author" class="mr-2">{{ author }}</span>
       </div>
     </template>
-    <template #cover>
-      <span class="absolute right-1 bottom-1 text-white text-[10px] px-1 rounded bg-black/70">
-        {{ item.length }}
-      </span>
-    </template>
   </ItemCard>
 </template>

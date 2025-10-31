@@ -39,7 +39,7 @@ const selectTabId = shallowRef($props.tabbar.id)
 const subCategoriesStreamTemp = temp.$applyRaw(`orderVideoSubCategoriesStreamTemp`, () => new Map<string, Utils.data.RStream<cosav.video.CosavVideo>>())
 const subSource = computed(() => {
   if (!subCategoriesStreamTemp.has(selectTabId.value))
-    subCategoriesStreamTemp.set(selectTabId.value, cosav.api.search.utils.createCategoryStream(selectTabId.value))
+    subCategoriesStreamTemp.set(selectTabId.value, cosav.api.search.utils.video.createCategoryStream(selectTabId.value))
   return subCategoriesStreamTemp.get(selectTabId.value)!
 })
 </script>

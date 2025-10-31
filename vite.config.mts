@@ -25,12 +25,14 @@ export default defineConfig(({ command }) => ({
     monkey({
       entry: 'src/main.ts',
       userscript: {
-        name: 'cosav/cos天堂',
+        name: {
+          default: 'cosav',
+          ds: 'cos天堂'
+        },
         version: _package.version,
         author: _package.author.name,
         description: _package.description,
-        require: ['core'],
-        ['name:ds']: 'cos天堂'
+        require: ['core']
       },
       build: {
         externalGlobals: command == 'serve' ? undefined : {
@@ -47,6 +49,7 @@ export default defineConfig(({ command }) => ({
       server: {
         mountGmApi: false,
         open: false,
+        prefix: false
       }
     }),
     command == 'build' ? undefined :

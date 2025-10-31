@@ -58,6 +58,9 @@ export namespace _cosavVideo {
   }
 
   export class CosavVideo extends uni.item.Item {
+    override $$meta: {
+      raw: RawFullVideo | RawCommonVideo
+    }
     override like(signal?: AbortSignal): PromiseLike<boolean> {
       window.$message.info('该内容无法点赞')
       throw new Error("Method not implemented.")
@@ -71,6 +74,7 @@ export namespace _cosavVideo {
     }
     constructor(v: uni.item.RawItem) {
       super(v)
+      this.$$meta = <any>v.$$meta
     }
   }
 }

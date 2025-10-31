@@ -1,5 +1,5 @@
 import "@/index.css"
-import { definePlugin, uni, Utils, type PluginConfigSearchTabbar } from "delta-comic-core"
+import { coreModule, definePlugin, requireDepend, uni, Utils, type PluginConfigSearchTabbar } from "delta-comic-core"
 import { pluginName } from "./symbol"
 import { AES, MD5, enc, mode, pad } from 'crypto-js'
 import { api, image } from "./api/forks"
@@ -9,7 +9,8 @@ import { cosavStore } from "./store"
 import { cosav } from "./api"
 import Tabbar from "./components/tabbar.vue"
 import Card from "./components/card.vue"
-import { CosavVideoPage } from "./api/page"
+import { CosavComicPage, CosavVideoPage } from "./api/page"
+import ComicCard from "./components/comicCard.vue"
 const testAxios = axios.create({
   timeout: 10000,
   method: 'GET',
@@ -17,6 +18,7 @@ const testAxios = axios.create({
     return inRange(status, 199, 499)
   },
 })
+const { layout } = requireDepend(coreModule)
 testAxios.interceptors.response.use(undefined, Utils.request.utilInterceptors.createAutoRetry(testAxios, 2))
 definePlugin({
   name: pluginName,
@@ -71,15 +73,22 @@ definePlugin({
       })
       cosavStore.api.value = api
       Utils.eventBus.SharedFunction.define(s => cosav.api.search.getRandomVideo(s), pluginName, 'getRandomProvide')
+      Utils.eventBus.SharedFunction.define(s => cosav.api.search.getRandomComic(s), pluginName + '2', 'getRandomProvide')
     }
   },
   content: {
     contentPage: {
       [CosavVideoPage.contentType]: CosavVideoPage,
-
+      [CosavComicPage.contentType]: CosavComicPage
     },
     itemCard: {
       [CosavVideoPage.contentType]: Card,
+      [CosavComicPage.contentType]: ComicCard,
+    },
+    layout: {
+      [CosavVideoPage.contentType]: layout.Default,
+      [CosavComicPage.contentType]: layout.Default,
+      
     }
   },
   otherProgress: [{
@@ -118,9 +127,20 @@ definePlugin({
   search: {
     methods: {
       keyword: {
-        name: '关键词',
+        name: '视频',
         getStream(input, sort) {
-          return cosav.api.search.utils.createKeywordStream(input, <cosav.SortType>sort)
+          return cosav.api.search.utils.video.createKeywordStream(input, <cosav.SortType>sort)
+        },
+        sorts: cosav.sortMap,
+        defaultSort: '',
+        async getAutoComplete(_input, _signal) {
+          return []
+        },
+      },
+      cos: {
+        name: '图集',
+        getStream(input, sort) {
+          return cosav.api.search.utils.comic.createKeywordStream(input, <cosav.SortType>sort)
         },
         sorts: cosav.sortMap,
         defaultSort: '',

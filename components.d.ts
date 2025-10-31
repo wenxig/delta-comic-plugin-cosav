@@ -13,6 +13,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Card: typeof import('./src/components/card.vue')['default']
+    ComicCard: typeof import('./src/components/comicCard.vue')['default']
+    copy: typeof import('./src/components/card copy.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NDatePicker: typeof import('naive-ui')['NDatePicker']
@@ -49,6 +51,8 @@ declare module 'vue' {
 // For TSX support
 declare global {
   const Card: typeof import('./src/components/card.vue')['default']
+  const ComicCard: typeof import('./src/components/comicCard.vue')['default']
+  const copy: typeof import('./src/components/card copy.vue')['default']
   const NButton: typeof import('naive-ui')['NButton']
   const NCard: typeof import('naive-ui')['NCard']
   const NDatePicker: typeof import('naive-ui')['NDatePicker']
