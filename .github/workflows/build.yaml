@@ -26,7 +26,15 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 10.17.1                      
+          version: 10.17.1
+          
+      - name: Restore cached Primes
+        id: cache-primes-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-cosav
 
       - name: Change depends
         run: sh ./script/install.sh
@@ -36,6 +44,13 @@ jobs:
 
       - name: Build
         run: pnpm run build
+        
+      - name: Restore cached Primes
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            node_modules
+          key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
 
       - name: Prepare tag/name/body variables
         id: vars
@@ -70,6 +85,6 @@ jobs:
           tag_name: ${{ steps.vars.outputs.tag }}
           name: ${{ steps.vars.outputs.name }}
           body: ${{ steps.vars.outputs.body }}
-          repository: wenxig/delta-comic
+          repository: wenxig/delta-comic-plugin-cosav
           token: ${{ secrets.GITHUB_TOKEN }}
           make_latest: true
