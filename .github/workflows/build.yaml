@@ -2,7 +2,7 @@ name: 构建和发布
 
 on:
   push: 
-    branches: ["plugin-mode"]
+    branches: ["master"]
 
 permissions:
   contents: write
