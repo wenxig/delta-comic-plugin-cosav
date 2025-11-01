@@ -25,6 +25,7 @@ export class CosavVideoPage extends uni.content.ContentPage {
     ])
   }
   public videos = Utils.data.PromiseContent.withResolvers<string[]>(true)
+  public videoType = 'application/vnd.apple.mpegurl'
   public async loadEps(signal?: AbortSignal) {
     const video = (<cosav.video.CosavVideo>this.union.value)
     if (video.$$meta.raw.group_id == "0") return [video.$thisEp]
@@ -34,10 +35,7 @@ export class CosavVideoPage extends uni.content.ContentPage {
       return new uni.ep.Ep({
         $$plugin: pluginName,
         index: raw.group_id,
-        name: v.title,
-        $$meta: {
-          raw: v
-        }
+        name: v.title
       })
     })
   }
