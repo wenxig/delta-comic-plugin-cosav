@@ -88,7 +88,7 @@ definePlugin({
     layout: {
       [CosavVideoPage.contentType]: layout.Default,
       [CosavComicPage.contentType]: layout.Default,
-      
+
     }
   },
   otherProgress: [{
