@@ -5,7 +5,7 @@ import type { cosav } from ".."
 import { Utils } from "delta-comic-core"
 import { _cosavComic } from "../comic"
 import dayjs from 'dayjs'
-export const spiltUsers = (userString = '') => userString.split(/\s/ig).filter(Boolean).map(v => v.trim()).filter(Boolean)
+export const spiltUsers = (userString = '') => userString.split(/\,|，|\&|\||、|＆|(\sand\s)|(\s和\s)|(\s[xX]\s)/ig).filter(Boolean).map(v => v.trim()).filter(Boolean)
 
 export const UiDuration = (length: string) => {
   const totalSeconds = Math.floor(parseFloat(length))

@@ -1,7 +1,7 @@
 import type { cosav, cosav as CosavType } from '..'
 import type { _cosavVideo } from "../video"
 import { _cosavSearch } from "../search"
-import { Utils } from "delta-comic-core"
+import { Utils, type PluginConfigSearchHotPageLevelboard } from "delta-comic-core"
 import { cosavStore } from "@/store"
 import { cosavStream, createCommonComicToItem, createCommonVideoToItem } from './utils'
 import { random } from 'es-toolkit/compat'
@@ -79,4 +79,11 @@ export namespace _cosavApiSearch {
 
   export const getSettings = PromiseContent.fromAsyncFunction((signal?: AbortSignal) => cosavStore.api.value!.get<_cosavSearch.RawSettings>('/site/setting', { signal }).then<_cosavSearch.Settings>(setting => new _cosavSearch.Settings(setting)))
 
+  export const getLevelboard = () => [{
+    name: '视频:总排行',
+    content: () => _cosavApiSearch.utils.video.byKeyword('', undefined, 'mv').setProcessor(v => v.list)
+  },{
+    name: '图集:总排行',
+    content: () => _cosavApiSearch.utils.comic.byKeyword('', undefined, 'mv').setProcessor(v => v.list)
+  }] satisfies PluginConfigSearchHotPageLevelboard[]
 }

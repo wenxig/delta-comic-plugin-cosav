@@ -148,6 +148,9 @@ definePlugin({
           return []
         },
       },
+    },
+    hotPage: {
+      levelBoard: cosav.api.search.getLevelboard()
     }
   }
 })
