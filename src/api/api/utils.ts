@@ -74,7 +74,7 @@ export const createCommonVideoToItem = (v: _cosavVideo.RawCommonVideo) => new _c
   },
   customIsAI: false,
   likeNumber: Number(v.likes),
-  updateTime: Number(v.addtime),
+  updateTime: dayjs(v.adddate, 'YYYY-MM-DD').toDate().getDate(),
   viewNumber: Number(v.viewnumber)
 })
 
@@ -134,7 +134,7 @@ export const createFullVideoToItem = (v: _cosavVideo.RawFullVideo) => new _cosav
   },
   customIsAI: false,
   likeNumber: Number(v.likes),
-  updateTime: Number(v.addtime),
+  updateTime: dayjs(v.adddate, 'YYYY-MM-DD').toDate().getDate(),
   viewNumber: Number(v.viewnumber)
 })
 
