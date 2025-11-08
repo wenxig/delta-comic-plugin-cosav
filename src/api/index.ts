@@ -12,7 +12,16 @@ export namespace cosav {
     list: T[]
     totalCnt: string
   }
-  export const sortMap = []
+  export const sortMap = [{
+    text: '相关度最高',
+    value: ''
+  }, {
+    text: '最多观看',
+    value: 'mv'
+  }, {
+    text: '最近更新',
+    value: 'mr'
+  }]
 
   export import search = _cosavSearch
   export import comic = _cosavComic

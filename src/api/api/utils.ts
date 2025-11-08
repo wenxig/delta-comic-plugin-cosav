@@ -2,11 +2,36 @@ import { _cosavVideo } from "../video"
 import { pluginName } from "@/symbol"
 import { CosavComicPage, CosavVideoPage } from "../page"
 import type { cosav } from ".."
-import { Utils } from "delta-comic-core"
+import { Utils, type uni } from "delta-comic-core"
 import { _cosavComic } from "../comic"
 import dayjs from 'dayjs'
+import { UserOutlined } from "@vicons/antd"
+import { isString } from "es-toolkit"
+import { isArray, isEmpty } from "es-toolkit/compat"
+import { Building } from "./icons"
 export const spiltUsers = (userString = '') => userString.split(/\,|，|\&|\||、|＆|(\sand\s)|(\s和\s)|(\s[xX]\s)/ig).filter(Boolean).map(v => v.trim()).filter(Boolean)
 
+const createAuthorList = (...authors: (uni.item.Author | uni.item.Author[] | undefined | false)[]) => {
+  const _authors = new Array<uni.item.Author>()
+  for (const author of authors) {
+    if (!author) continue
+    if (isArray(author))
+      _authors.push(...author)
+    else
+      _authors.push(author)
+  }
+  return _authors
+}
+
+const createVideoAuthor = (author: string | string[]) => (isString(author) ? spiltUsers(author) : author).map(v => ({
+  label: v,
+  description: '参演',
+  icon: UserOutlined,
+  actions: [
+    'search_video'
+  ],
+  subscribe: 'keyword'
+}))
 export const UiDuration = (length: string) => {
   const totalSeconds = Math.floor(parseFloat(length))
   const hours = Math.floor(totalSeconds / 3600)
@@ -23,7 +48,7 @@ export const createCommonVideoToItem = (v: _cosavVideo.RawCommonVideo) => new _c
     raw: v
   },
   $$plugin: pluginName,
-  author: spiltUsers(v.author),
+  author: createVideoAuthor(v.author),
   commentSendable: false,
   contentType: CosavVideoPage.contentType,
   epLength: 'unknown',
@@ -83,7 +108,18 @@ export const createFullVideoToItem = (v: _cosavVideo.RawFullVideo) => new _cosav
     raw: v
   },
   $$plugin: pluginName,
-  author: spiltUsers(v.author).concat([v.company]),
+  author: createAuthorList(
+    createVideoAuthor(v.author),
+    !isEmpty(v.company) && {
+      icon: Building,
+      description:'片商',
+      label: v.company,
+      actions:[
+        'search_video'
+      ],
+      subscribe: 'keyword'
+    }
+  ),
   commentSendable: false,
   contentType: CosavVideoPage.contentType,
   epLength: 'unknown',
@@ -138,12 +174,22 @@ export const createFullVideoToItem = (v: _cosavVideo.RawFullVideo) => new _cosav
   viewNumber: Number(v.viewnumber)
 })
 
+const createComicAuthor = (author: string | string[]) => (isString(author) ? spiltUsers(author) : author).map(v => ({
+  label: v,
+  description: 'coser',
+  icon: UserOutlined,
+  actions: [
+    'search_comic'
+  ],
+  subscribe: 'keyword'
+}))
+
 export const createCommonComicToItem = (v: _cosavComic.RawCommonComic) => new _cosavComic.CosavComic({
   $$meta: {
     raw: v
   },
   $$plugin: pluginName,
-  author: spiltUsers(v.author),
+  author: createComicAuthor(v.author),
   commentSendable: false,
   contentType: CosavComicPage.contentType,
   epLength: 'unknown',
@@ -201,7 +247,7 @@ export const createFullComicToItem = (v: _cosavComic.RawFullComic) => new _cosav
     raw: v
   },
   $$plugin: pluginName,
-  author: spiltUsers(v.author),
+  author: createComicAuthor(v.author),
   commentSendable: false,
   contentType: CosavComicPage.contentType,
   epLength: 'unknown',

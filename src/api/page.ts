@@ -3,7 +3,7 @@ import { coreModule, requireDepend, uni, Utils } from "delta-comic-core"
 import { cosav } from "."
 import { createCommonComicToItem, createCommonVideoToItem } from "./api/utils"
 const { view } = requireDepend(coreModule)
-export class CosavVideoPage extends uni.content.ContentPage {
+export class CosavVideoPage extends uni.content.ContentVideoPage {
   public static contentType = uni.content.ContentPage.toContentTypeString({
     name: 'video',
     plugin: pluginName
@@ -19,13 +19,14 @@ export class CosavVideoPage extends uni.content.ContentPage {
       this.detail.content.isLoading.value || this.detail.content.loadPromise(cosav.api.video.getInfo(this.id, signal).then((v: cosav.video.CosavVideo) => {
         const raw = <cosav.video.RawFullVideo>v.$$meta.raw
         this.recommends.resolve(raw.cnxh.map(createCommonVideoToItem))
-        this.videos.resolve(raw.video_url_vip.concat(raw.video_url))
+        this.videos.resolve(raw.video_url_vip.concat(raw.video_url).map(v => ({
+          src: v,
+          type: 'application/vnd.apple.mpegurl'
+        })))
         return v
       }))
     ])
   }
-  public videos = Utils.data.PromiseContent.withResolvers<string[]>(true)
-  public videoType = 'application/vnd.apple.mpegurl'
   public async loadEps(signal?: AbortSignal) {
     const video = (<cosav.video.CosavVideo>this.union.value)
     if (video.$$meta.raw.group_id == "0") return [video.$thisEp]
@@ -39,8 +40,13 @@ export class CosavVideoPage extends uni.content.ContentPage {
       })
     })
   }
-  override reloadAll(signal?: AbortSignal): Promise<any> {
-    throw new Error("Method not implemented.")
+  override reloadAll(signal?: AbortSignal) {
+    this.pid.reset(true)
+    this.eps.reset(true)
+    this.videos.reset(true)
+    this.detail.reset(true)
+    this.recommends.reset(true)
+    return this.loadAll(signal)
   }
   override plugin = pluginName
   override loadAllOffline(): Promise<any> {
@@ -53,7 +59,7 @@ export class CosavVideoPage extends uni.content.ContentPage {
 }
 
 
-export class CosavComicPage extends uni.content.ContentPage {
+export class CosavComicPage extends uni.content.ContentImagePage {
   public static contentType = uni.content.ContentPage.toContentTypeString({
     name: 'comic',
     plugin: pluginName
@@ -62,7 +68,7 @@ export class CosavComicPage extends uni.content.ContentPage {
   override comments = Utils.data.Stream.create<uni.comment.Comment>(function* () {
     return
   })
-  override loadAll(signal?: AbortSignal): Promise<any> {
+  override loadAll(signal?: AbortSignal) {
     this.pid.resolve(this.id)
     return Promise.all([
       this.detail.content.isLoading.value || this.detail.content.loadPromise(cosav.api.comic.getInfo(this.id, signal).then(v => {
@@ -73,9 +79,12 @@ export class CosavComicPage extends uni.content.ContentPage {
       this.images.content.isLoading.value || this.images.content.loadPromise(cosav.api.comic.getPages(this.id, signal)),
     ])
   }
-  public images = Utils.data.PromiseContent.withResolvers<uni.image.Image[]>(false)
-  override reloadAll(signal?: AbortSignal): Promise<any> {
-    throw new Error("Method not implemented.")
+  override reloadAll(signal?: AbortSignal) {
+    this.pid.reset(true)
+    this.images.reset(true)
+    this.detail.reset(true)
+    this.recommends.reset(true)
+    return this.loadAll(signal)
   }
   override plugin = pluginName
   override loadAllOffline(): Promise<any> {

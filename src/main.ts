@@ -1,9 +1,9 @@
 import "@/index.css"
-import { coreModule, definePlugin, requireDepend, uni, Utils, type PluginConfigSearchTabbar } from "delta-comic-core"
+import { coreModule, definePlugin, requireDepend, uni, Utils, type PluginConfigSearchTabbar, type PluginConfigSubscribe } from "delta-comic-core"
 import { pluginName } from "./symbol"
 import { AES, MD5, enc, mode, pad } from 'crypto-js'
 import { api, image } from "./api/forks"
-import { inRange, isString } from 'es-toolkit/compat'
+import { first, inRange, isEmpty, isString } from 'es-toolkit/compat'
 import axios, { formToJSON } from 'axios'
 import { cosavStore } from "./store"
 import { cosav } from "./api"
@@ -11,6 +11,7 @@ import Tabbar from "./components/tabbar.vue"
 import Card from "./components/card.vue"
 import { CosavComicPage, CosavVideoPage } from "./api/page"
 import ComicCard from "./components/comicCard.vue"
+import { SearchOutlined } from "@vicons/material"
 const testAxios = axios.create({
   timeout: 10000,
   method: 'GET',
@@ -133,8 +134,11 @@ definePlugin({
         },
         sorts: cosav.sortMap,
         defaultSort: '',
-        async getAutoComplete(_input, _signal) {
-          return []
+        async getAutoComplete(input, signal) {
+          return (await cosav.api.search.utils.video.byKeyword(input, undefined, undefined, signal)).list.map(v => ({
+            text: v.title,
+            value: v.title
+          }))
         },
       },
       cos: {
@@ -144,13 +148,97 @@ definePlugin({
         },
         sorts: cosav.sortMap,
         defaultSort: '',
-        async getAutoComplete(_input, _signal) {
-          return []
+        async getAutoComplete(input, signal) {
+          return (await cosav.api.search.utils.comic.byKeyword(input, undefined, undefined, signal)).list.map(v => ({
+            text: v.title,
+            value: v.title
+          }))
         },
       },
     },
     hotPage: {
       levelBoard: cosav.api.search.getLevelboard()
     }
+  },
+  user: {
+    authorActions: {
+      search_comic: {
+        name: '搜索该coser',
+        call(author) {
+          return Utils.eventBus.SharedFunction.call('routeToSearch', author.label, 'cos')
+        },
+        icon: SearchOutlined
+      },
+      search_video: {
+        name: '搜索',
+        call(author) {
+          return Utils.eventBus.SharedFunction.call('routeToSearch', author.label, 'video')
+        },
+        icon: SearchOutlined
+      }
+    }
+  },
+  subscribe: {
+    keyword: {
+      getListStream: author => Utils.data.Stream.create<uni.item.Item>(async function* (signal, that) {
+        const video = cosav.api.search.utils.video.createKeywordStream(author.label, 'mr')
+        const comic = cosav.api.search.utils.comic.createKeywordStream(author.label, 'mr')
+        signal.addEventListener('abort', () => {
+          comic.stop()
+          video.stop()
+        })
+        while (true) {
+          const news = new Array<uni.item.Item>()
+          const [vRes, cRes] = await Promise.all([
+            video._isDone ? { value: [] } : video.next(),
+            comic._isDone ? { value: [] } : comic.next(),
+          ])
+          news.push(...(vRes?.value ?? []))
+          news.push(...(cRes?.value ?? []))
+          that.pages.value = Math.max(video._pages, comic._pages)
+          that.page.value = Math.max(video._page, comic._page)
+          that.total.value = video._total + comic._total
+          yield news
+          if (video._isDone && comic._isDone) return
+        }
+      }),
+      getUpdateList(olds, signal) {
+        return diff(this, olds, signal)
+      },
+    },
   }
 })
+
+
+const diff = async (that: PluginConfigSubscribe, olds: Parameters<PluginConfigSubscribe['getUpdateList']>[0], signal?: AbortSignal) => {
+  const allList = await Promise.all(olds.map(async v => {
+    const stream = that.getListStream(v.author)
+    signal?.addEventListener('abort', () => stream.stop())
+    const news = (await stream.next()).value
+    if (!news) throw new Error(`[subscribe] ${v.author.label} is void!`)
+    return {
+      author: v.author,
+      list: news,
+    }
+  }))
+  const changedAuthors = new Array<uni.item.Author>()
+  for (const item of allList) {
+    const key = item.author.label
+    const old = olds.find(o => o.author.label === key)
+
+    const newFirst = first(item.list)
+    const oldFirst = first(old?.list)
+
+    let changed = false
+    if (oldFirst && newFirst)
+      changed = newFirst.id !== oldFirst.id
+    else
+      changed = true
+    if (changed) changedAuthors.push(item.author)
+  }
+
+  return {
+    isUpdated: isEmpty(changedAuthors),
+    whichUpdated: changedAuthors
+  }
+}
