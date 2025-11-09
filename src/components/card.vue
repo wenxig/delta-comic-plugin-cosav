@@ -58,7 +58,7 @@ const { comp: { ItemCard } } = requireDepend(coreModule)
         </NIcon>
         <span class="mr-2">{{ Utils.translate.createDateString(item.$updateTime) }}</span>
       </div>
-      <div class="flex flex-nowrap items-center *:text-nowrap van-ellipsis">
+      <div class="flex flex-nowrap items-center *:text-nowrap van-ellipsis" v-if="item.author.length">
         <NIcon color="var(--van-text-color-2)" size="14px">
           <DrawOutlined />
         </NIcon>

@@ -165,14 +165,14 @@ definePlugin({
       search_comic: {
         name: '搜索该coser',
         call(author) {
-          return Utils.eventBus.SharedFunction.call('routeToSearch', author.label, 'cos')
+          return Utils.eventBus.SharedFunction.call('routeToSearch', author.label, `${pluginName}:cos`)
         },
         icon: SearchOutlined
       },
       search_video: {
         name: '搜索',
         call(author) {
-          return Utils.eventBus.SharedFunction.call('routeToSearch', author.label, 'video')
+          return Utils.eventBus.SharedFunction.call('routeToSearch', author.label, `${pluginName}:keyword`)
         },
         icon: SearchOutlined
       }

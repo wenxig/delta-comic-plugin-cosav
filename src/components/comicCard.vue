@@ -2,6 +2,7 @@
 import { LikeOutlined } from '@vicons/antd'
 import { AccessTimeRound, DrawOutlined } from '@vicons/material'
 import { coreModule, requireDepend, uni, Utils } from 'delta-comic-core'
+import { uniqBy } from 'es-toolkit'
 import { StyleValue } from 'vue'
 const $props = defineProps<{
   item: uni.item.Item
@@ -45,7 +46,7 @@ const { comp: { ItemCard } } = requireDepend(coreModule)
     </div>
     <template v-if="type != 'small'">
       <div class="flex gap-0.5 **:text-nowrap">
-        <VanTag type="primary" plain v-for="category of item.categories">{{ category.name }}</VanTag>
+        <VanTag type="primary" plain v-for="category of uniqBy(item.categories, v => v.name)">{{ category.name }}</VanTag>
       </div>
       <div class="flex flex-nowrap items-center *:text-nowrap van-ellipsis mt-0.5"
         v-if="item.$updateTime.get('year') != 1970">

@@ -2,6 +2,7 @@ import { pluginName } from "@/symbol"
 import { coreModule, requireDepend, uni, Utils } from "delta-comic-core"
 import { cosav } from "."
 import { createCommonComicToItem, createCommonVideoToItem } from "./api/utils"
+import { until } from "@vueuse/core"
 const { view } = requireDepend(coreModule)
 export class CosavVideoPage extends uni.content.ContentVideoPage {
   public static contentType = uni.content.ContentPage.toContentTypeString({
@@ -13,10 +14,10 @@ export class CosavVideoPage extends uni.content.ContentVideoPage {
     return
   })
   override loadAll(signal?: AbortSignal): Promise<any> {
-    this.pid.resolve(this.id)
+    this.pid.resolve(this.ep)
     return Promise.all([
       this.eps.content.isLoading.value || this.eps.content.loadPromise(this.loadEps(signal)),
-      this.detail.content.isLoading.value || this.detail.content.loadPromise(cosav.api.video.getInfo(this.id, signal).then((v: cosav.video.CosavVideo) => {
+      this.detail.content.isLoading.value || this.detail.content.loadPromise(cosav.api.video.getInfo(this.ep, signal).then((v: cosav.video.CosavVideo) => {
         const raw = <cosav.video.RawFullVideo>v.$$meta.raw
         this.recommends.resolve(raw.cnxh.map(createCommonVideoToItem))
         this.videos.resolve(raw.video_url_vip.concat(raw.video_url).map(v => ({
@@ -28,6 +29,7 @@ export class CosavVideoPage extends uni.content.ContentVideoPage {
     ])
   }
   public async loadEps(signal?: AbortSignal) {
+    await until(this.union).toBeTruthy()
     const video = (<cosav.video.CosavVideo>this.union.value)
     if (video.$$meta.raw.group_id == "0") return [video.$thisEp]
     const info = await cosav.api.search.utils.video.byGroupId(video.$$meta.raw.group_id, undefined, undefined, signal)
@@ -35,7 +37,7 @@ export class CosavVideoPage extends uni.content.ContentVideoPage {
       const raw = v.$$meta.raw as cosav.video.RawCommonVideo
       return new uni.ep.Ep({
         $$plugin: pluginName,
-        index: raw.group_id,
+        index: raw.id,
         name: v.title
       })
     })
@@ -69,14 +71,14 @@ export class CosavComicPage extends uni.content.ContentImagePage {
     return
   })
   override loadAll(signal?: AbortSignal) {
-    this.pid.resolve(this.id)
+    this.pid.resolve(this.ep)
     return Promise.all([
-      this.detail.content.isLoading.value || this.detail.content.loadPromise(cosav.api.comic.getInfo(this.id, signal).then(v => {
+      this.detail.content.isLoading.value || this.detail.content.loadPromise(cosav.api.comic.getInfo(this.ep, signal).then(v => {
         const raw = v.$$meta.raw as cosav.comic.RawFullComic
         this.recommends.resolve(raw.related?.map(createCommonComicToItem) ?? [])
         return v
       })),
-      this.images.content.isLoading.value || this.images.content.loadPromise(cosav.api.comic.getPages(this.id, signal)),
+      this.images.content.isLoading.value || this.images.content.loadPromise(cosav.api.comic.getPages(this.ep, signal)),
     ])
   }
   override reloadAll(signal?: AbortSignal) {

@@ -58,7 +58,7 @@ export const createCommonVideoToItem = (v: _cosavVideo.RawCommonVideo) => new _c
   length: UiDuration(v.duration),
   thisEp: {
     $$plugin: pluginName,
-    index: v.group_id,
+    index: v.id,
     name: v.title,
     $$meta: {
       id: v.group_id
@@ -129,7 +129,7 @@ export const createFullVideoToItem = (v: _cosavVideo.RawFullVideo) => new _cosav
   length: UiDuration(v.duration),
   thisEp: {
     $$plugin: pluginName,
-    index: v.group_id,
+    index: v.id,
     name: v.title,
     $$meta: {
       id: v.group_id
