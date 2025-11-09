@@ -99,7 +99,7 @@ export const createCommonVideoToItem = (v: _cosavVideo.RawCommonVideo) => new _c
   },
   customIsAI: false,
   likeNumber: Number(v.likes),
-  updateTime: dayjs(v.adddate, 'YYYY-MM-DD').toDate().getDate(),
+  updateTime: dayjs(v.adddate, 'YYYY-MM-DD').toDate().getTime(),
   viewNumber: Number(v.viewnumber)
 })
 
@@ -170,7 +170,7 @@ export const createFullVideoToItem = (v: _cosavVideo.RawFullVideo) => new _cosav
   },
   customIsAI: false,
   likeNumber: Number(v.likes),
-  updateTime: dayjs(v.adddate, 'YYYY-MM-DD').toDate().getDate(),
+  updateTime: dayjs(v.adddate, 'YYYY-MM-DD').toDate().getTime(),
   viewNumber: Number(v.viewnumber)
 })
 
@@ -237,7 +237,7 @@ export const createCommonComicToItem = (v: _cosavComic.RawCommonComic) => new _c
   },
   customIsAI: false,
   likeNumber: 0,
-  updateTime: dayjs(v.adddate, 'YYYY-MM-DD').toDate().getDate(),
+  updateTime: dayjs(v.adddate, 'YYYY-MM-DD').toDate().getTime(),
   viewNumber: Number(v.total_views),
   description: v.album_desc || ''
 })
@@ -295,7 +295,7 @@ export const createFullComicToItem = (v: _cosavComic.RawFullComic) => new _cosav
   },
   customIsAI: false,
   likeNumber: Number(v.likes),
-  updateTime: dayjs(v.adddate, 'YYYY-MM-DD').toDate().getDate(),
+  updateTime: dayjs(v.adddate, 'YYYY-MM-DD').toDate().getTime(),
   viewNumber: Number(v.total_views),
   description: v.album_desc || ''
 })

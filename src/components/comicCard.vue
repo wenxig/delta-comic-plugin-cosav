@@ -1,8 +1,7 @@
 <script setup lang='ts'>
 import { LikeOutlined } from '@vicons/antd'
 import { AccessTimeRound, DrawOutlined } from '@vicons/material'
-import { Comp, coreModule, requireDepend, uni, Utils } from 'delta-comic-core'
-import { isEmpty } from 'es-toolkit/compat'
+import { coreModule, requireDepend, uni, Utils } from 'delta-comic-core'
 import { StyleValue } from 'vue'
 const $props = defineProps<{
   item: uni.item.Item
@@ -32,16 +31,13 @@ const { comp: { ItemCard } } = requireDepend(coreModule)
         </NIcon>
         <span>{{ item.likeNumber }}</span>
       </span>
-      <span class="absolute right-1 text-xs">
-        {{ item.length }}
-      </span>
     </template>
     <div class="flex gap-0.5 items-center" v-if="item.author.length && type == 'small'">
       <NIcon color="var(--van-text-color-2)" size="14px">
         <DrawOutlined />
       </NIcon>
-      <span class="ml-0.5 text-xs van-ellipsis w-2/3 text-(--van-text-color-2)">
-        {{ item.author[0] }}
+      <span class="ml-0.5 text-xs van-ellipsis w-full text-(--van-text-color-2)">
+        {{ item.author[0].label }}
         <template v-if="item.author.length > 1">
           等联合创作
         </template>
@@ -62,7 +58,7 @@ const { comp: { ItemCard } } = requireDepend(coreModule)
         <NIcon color="var(--van-text-color-2)" size="14px">
           <DrawOutlined />
         </NIcon>
-        <span v-for="author of item.author" class="mr-2">{{ author }}</span>
+        <span v-for="author of item.author" class="mr-2">{{ author.label }}</span>
       </div>
     </template>
   </ItemCard>

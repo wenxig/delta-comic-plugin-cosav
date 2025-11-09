@@ -78,7 +78,7 @@ export default defineConfig(({ command }) => ({
     }
   },
   build: {
-    sourcemap: true,
+    sourcemap: false,
     // minify: true,
     // cssMinify: true
   },
