@@ -12,6 +12,8 @@ import Card from "./components/card.vue"
 import { CosavComicPage, CosavVideoPage } from "./api/page"
 import ComicCard from "./components/comicCard.vue"
 import { SearchOutlined } from "@vicons/material"
+import { UserOutlined } from "@vicons/antd"
+import { Building } from "./api/api/icons"
 const testAxios = axios.create({
   timeout: 10000,
   method: 'GET',
@@ -176,6 +178,10 @@ definePlugin({
         },
         icon: SearchOutlined
       }
+    },
+    authorIcon: {
+      user: UserOutlined,
+      cpy: Building
     }
   },
   subscribe: {

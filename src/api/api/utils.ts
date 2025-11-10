@@ -5,10 +5,8 @@ import type { cosav } from ".."
 import { Utils, type uni } from "delta-comic-core"
 import { _cosavComic } from "../comic"
 import dayjs from 'dayjs'
-import { UserOutlined } from "@vicons/antd"
 import { isString } from "es-toolkit"
 import { isArray, isEmpty } from "es-toolkit/compat"
-import { Building } from "./icons"
 export const spiltUsers = (userString = '') => userString.split(/\,|，|\&|\||、|＆|(\sand\s)|(\s和\s)|(\s[xX]\s)/ig).filter(Boolean).map(v => v.trim()).filter(Boolean)
 
 const createAuthorList = (...authors: (uni.item.Author | uni.item.Author[] | undefined | false)[]) => {
@@ -26,7 +24,7 @@ const createAuthorList = (...authors: (uni.item.Author | uni.item.Author[] | und
 const createVideoAuthor = (author: string | string[]) => (isString(author) ? spiltUsers(author) : author).map(v => ({
   label: v,
   description: '参演',
-  icon: UserOutlined,
+  icon: 'user',
   actions: [
     'search_video'
   ],
@@ -111,7 +109,7 @@ export const createFullVideoToItem = (v: _cosavVideo.RawFullVideo) => new _cosav
   author: createAuthorList(
     createVideoAuthor(v.author),
     !isEmpty(v.company) && {
-      icon: Building,
+      icon: 'cpy',
       description:'片商',
       label: v.company,
       actions:[
@@ -177,7 +175,7 @@ export const createFullVideoToItem = (v: _cosavVideo.RawFullVideo) => new _cosav
 const createComicAuthor = (author: string | string[]) => (isString(author) ? spiltUsers(author) : author).map(v => ({
   label: v,
   description: 'coser',
-  icon: UserOutlined,
+  icon: 'user',
   actions: [
     'search_comic'
   ],
