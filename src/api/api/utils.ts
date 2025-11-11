@@ -28,7 +28,8 @@ const createVideoAuthor = (author: string | string[]) => (isString(author) ? spi
   actions: [
     'search_video'
   ],
-  subscribe: 'keyword'
+  subscribe: 'keyword',
+  $$plugin: pluginName
 }))
 export const UiDuration = (length: string) => {
   const totalSeconds = Math.floor(parseFloat(length))
@@ -115,7 +116,8 @@ export const createFullVideoToItem = (v: _cosavVideo.RawFullVideo) => new _cosav
       actions:[
         'search_video'
       ],
-      subscribe: 'keyword'
+      subscribe: 'keyword',
+      $$plugin: pluginName
     }
   ),
   commentSendable: false,
@@ -179,7 +181,8 @@ const createComicAuthor = (author: string | string[]) => (isString(author) ? spi
   actions: [
     'search_comic'
   ],
-  subscribe: 'keyword'
+  subscribe: 'keyword',
+  $$plugin: pluginName
 }))
 
 export const createCommonComicToItem = (v: _cosavComic.RawCommonComic) => new _cosavComic.CosavComic({
