@@ -80,18 +80,17 @@ definePlugin({
     }
   },
   content: {
-    contentPage: {
-      [CosavVideoPage.contentType]: CosavVideoPage,
-      [CosavComicPage.contentType]: CosavComicPage
+    [CosavVideoPage.contentType]: {
+      contentPage: CosavVideoPage,
+      itemCard: Card,
+      layout: layout.Default,
+      itemTranslator: raw => cosav.video.CosavVideo.create(raw)
     },
-    itemCard: {
-      [CosavVideoPage.contentType]: Card,
-      [CosavComicPage.contentType]: ComicCard,
-    },
-    layout: {
-      [CosavVideoPage.contentType]: layout.Default,
-      [CosavComicPage.contentType]: layout.Default,
-
+    [CosavComicPage.contentType]: {
+      contentPage: CosavComicPage,
+      itemCard: ComicCard,
+      layout: layout.Default,
+      itemTranslator: raw => cosav.comic.CosavComic.create(raw)
     }
   },
   otherProgress: [{
