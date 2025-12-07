@@ -5,11 +5,8 @@ import { createCommonComicToItem, createCommonVideoToItem } from "./api/utils"
 import { until } from "@vueuse/core"
 const { view } = requireDepend(coreModule)
 export class CosavVideoPage extends uni.content.ContentVideoPage {
-  public static contentType = uni.content.ContentPage.toContentTypeString({
-    name: 'video',
-    plugin: pluginName
-  })
-  override contentType = uni.content.ContentPage.toContentType(CosavVideoPage.contentType)
+  public static contentType = uni.content.ContentPage.contentPage.toString([pluginName, 'video'])
+  override contentType = uni.content.ContentPage.contentPage.toJSON(CosavVideoPage.contentType)
   override comments = Utils.data.Stream.create<uni.comment.Comment>(function* () {
     return
   })
@@ -51,10 +48,10 @@ export class CosavVideoPage extends uni.content.ContentVideoPage {
     return this.loadAll(signal)
   }
   override plugin = pluginName
-  override loadAllOffline(): Promise<any> {
+  override loadAllOffline(_save: any): Promise<never> {
     throw new Error("Method not implemented.")
   }
-  override exportOffline(save: any): Promise<any> {
+  override exportOffline(): Promise<never> {
     throw new Error("Method not implemented.")
   }
   override ViewComp = view.Video
@@ -62,11 +59,8 @@ export class CosavVideoPage extends uni.content.ContentVideoPage {
 
 
 export class CosavComicPage extends uni.content.ContentImagePage {
-  public static contentType = uni.content.ContentPage.toContentTypeString({
-    name: 'comic',
-    plugin: pluginName
-  })
-  override contentType = uni.content.ContentPage.toContentType(CosavVideoPage.contentType)
+  public static contentType = uni.content.ContentPage.contentPage.toString([pluginName, 'comic'])
+  override contentType = uni.content.ContentPage.contentPage.toJSON(CosavVideoPage.contentType)
   override comments = Utils.data.Stream.create<uni.comment.Comment>(function* () {
     return
   })
@@ -89,10 +83,10 @@ export class CosavComicPage extends uni.content.ContentImagePage {
     return this.loadAll(signal)
   }
   override plugin = pluginName
-  override loadAllOffline(): Promise<any> {
+  override loadAllOffline(_save: any): Promise<never> {
     throw new Error("Method not implemented.")
   }
-  override exportOffline(save: any): Promise<any> {
+  override exportOffline(): Promise<never> {
     throw new Error("Method not implemented.")
   }
   override ViewComp = view.Images

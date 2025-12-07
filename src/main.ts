@@ -84,13 +84,13 @@ definePlugin({
       contentPage: CosavVideoPage,
       itemCard: Card,
       layout: layout.Default,
-      itemTranslator: raw => cosav.video.CosavVideo.create(raw)
+      itemTranslator: raw => new cosav.video.CosavVideo(raw)
     },
     [CosavComicPage.contentType]: {
       contentPage: CosavComicPage,
       itemCard: ComicCard,
       layout: layout.Default,
-      itemTranslator: raw => cosav.comic.CosavComic.create(raw)
+      itemTranslator: raw => new cosav.comic.CosavComic(raw)
     }
   },
   otherProgress: [{
@@ -104,7 +104,7 @@ definePlugin({
         ])
         cosavStore.settings.value = settings
         for (const page of settings.$index_page) {
-          uni.content.ContentPage.setMainList(pluginName, {
+          uni.content.ContentPage.addMainList(pluginName, {
             content: () => Utils.data.PromiseContent.resolve(page.list),
             name: page.name,
             onClick() {
@@ -113,7 +113,7 @@ definePlugin({
           })
         }
         cosavStore.categories.value = categories
-        uni.content.ContentPage.setTabbar(pluginName, ...categories.map(v => (<PluginConfigSearchTabbar>{
+        uni.content.ContentPage.addTabbar(pluginName, ...categories.map(v => (<PluginConfigSearchTabbar>{
           comp: Tabbar,
           id: v.CHID,
           title: v.name
@@ -166,14 +166,14 @@ definePlugin({
       search_comic: {
         name: '搜索该coser',
         call(author) {
-          return Utils.eventBus.SharedFunction.call('routeToSearch', author.label, `${pluginName}:cos`)
+          return Utils.eventBus.SharedFunction.call('routeToSearch', author.label, [pluginName, 'cos'])
         },
         icon: SearchOutlined
       },
       search_video: {
         name: '搜索',
         call(author) {
-          return Utils.eventBus.SharedFunction.call('routeToSearch', author.label, `${pluginName}:keyword`)
+          return Utils.eventBus.SharedFunction.call('routeToSearch', author.label, [pluginName, 'keyword'])
         },
         icon: SearchOutlined
       }
