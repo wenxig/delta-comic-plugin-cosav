@@ -76,7 +76,7 @@ definePlugin({
       })
       cosavStore.api.value = api
       Utils.eventBus.SharedFunction.define(s => cosav.api.search.getRandomVideo(s), pluginName, 'getRandomProvide')
-      Utils.eventBus.SharedFunction.define(s => cosav.api.search.getRandomComic(s), pluginName + '2', 'getRandomProvide')
+      Utils.eventBus.SharedFunction.define(s => cosav.api.search.getRandomComic(s), pluginName, 'getRandomProvide')
     }
   },
   content: {
