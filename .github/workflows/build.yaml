@@ -85,6 +85,6 @@ jobs:
           tag_name: ${{ steps.vars.outputs.tag }}
           name: ${{ steps.vars.outputs.name }}
           body: ${{ steps.vars.outputs.body }}
-          repository: wenxig/delta-comic-plugin-cosav
+          repository: ${{ github.repository }}
           token: ${{ secrets.GITHUB_TOKEN }}
           make_latest: true
