@@ -93,8 +93,8 @@ export const createCommonVideoToItem = (v: _cosavVideo.RawCommonVideo) => new _c
   ),
   cover: {
     $$plugin: pluginName,
-    forkNamespace: 'default',
-    path: new URL(v.photo).pathname.replaceAll('/media', '')
+    type: 'default',
+    pathname: new URL(v.photo).pathname.replaceAll('/media', '')
   },
   customIsAI: false,
   likeNumber: Number(v.likes),
@@ -165,8 +165,8 @@ export const createFullVideoToItem = (v: _cosavVideo.RawFullVideo) => new _cosav
   ),
   cover: {
     $$plugin: pluginName,
-    forkNamespace: 'default',
-    path: new URL(v.photo).pathname.replaceAll('/media', '')
+    type: 'default',
+    pathname: new URL(v.photo).pathname.replaceAll('/media', '')
   },
   customIsAI: false,
   likeNumber: Number(v.likes),
@@ -233,8 +233,8 @@ export const createCommonComicToItem = (v: _cosavComic.RawCommonComic) => new _c
   ),
   cover: {
     $$plugin: pluginName,
-    forkNamespace: 'default',
-    path: `/albums/${v.id}.webp`
+    type: 'default',
+    pathname: `/albums/${v.id}.webp`
   },
   customIsAI: false,
   likeNumber: 0,
@@ -291,8 +291,8 @@ export const createFullComicToItem = (v: _cosavComic.RawFullComic) => new _cosav
   ),
   cover: {
     $$plugin: pluginName,
-    forkNamespace: 'default',
-    path: `/albums/${v.id}.webp`
+    type: 'default',
+    pathname: `/albums/${v.id}.webp`
   },
   customIsAI: false,
   likeNumber: Number(v.likes),

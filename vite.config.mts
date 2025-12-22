@@ -10,7 +10,7 @@ import monkey from 'vite-plugin-monkey'
 import { browserslistToTargets } from 'lightningcss'
 import browserslist from 'browserslist'
 import external from 'vite-plugin-external'
-import { createExternalConfig, createMonkeyConfig } from 'delta-comic-core/vite'
+import { deltaComic } from 'delta-comic-core/vite'
 export default defineConfig(({ command }) => ({
   plugins: [
     vue(),
@@ -23,7 +23,7 @@ export default defineConfig(({ command }) => ({
       ],
     }),
     tailwindcss(),
-    monkey(createMonkeyConfig({
+    deltaComic({
       name: 'cosav',
       displayName: 'cos天堂',
       version: _package.version,
@@ -31,8 +31,7 @@ export default defineConfig(({ command }) => ({
       author: _package.author.name,
       description: _package.description,
       require: ['core']
-    }, command)),
-    external(createExternalConfig(command))
+    }, command)
   ],
   resolve: {
     alias: {
