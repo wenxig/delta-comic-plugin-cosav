@@ -31,11 +31,12 @@ definePlugin({
       test: (fork, signal) => testAxios.get(`${fork}/promote_list`, { signal })
     }
   },
-  image: {
-    forks: {
-      default: image
-    },
-    test: '/videos/tmb/30859/0.jpg'
+  resource: {
+    types: [{
+      type: 'default',
+      test: (url, signal) => axios.get(`${url}/videos/tmb/30859/0.jpg`, { signal }),
+      urls: image
+    }]
   },
   onBooted: ins => {
     console.log('setup...', ins, ins.api?.api)

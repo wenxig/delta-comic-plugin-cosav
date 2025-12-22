@@ -27,7 +27,7 @@ export default defineConfig(({ command }) => ({
       name: 'cosav',
       displayName: 'cos天堂',
       version: _package.version,
-      supportCoreVersion: '>=0.3.3',
+      supportCoreVersion: '^0.4',
       author: _package.author.name,
       description: _package.description,
       require: ['core']

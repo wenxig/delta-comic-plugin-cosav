@@ -13,8 +13,8 @@ export namespace _cosavApiComic {
     cosavStore.api.value!.get<{ latest: string[] }>('/albums/album_content', { signal, params: { id, limit: 999 } })
       .then<uni.image.Image[]>(v => v.latest.map(v => uni.image.Image.create({
         $$plugin: pluginName,
-        forkNamespace: 'default',
-        path: new URL(v).pathname.replaceAll('/media', '')
+        type: 'default',
+        pathname: new URL(v).pathname.replaceAll('/media', '')
       })))
   )
 }
