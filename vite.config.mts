@@ -6,10 +6,8 @@ import { NaiveUiResolver, VantResolver } from 'unplugin-vue-components/resolvers
 import tailwindcss from '@tailwindcss/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import _package from './package.json'
-import monkey from 'vite-plugin-monkey'
 import { browserslistToTargets } from 'lightningcss'
 import browserslist from 'browserslist'
-import external from 'vite-plugin-external'
 import { deltaComic } from 'delta-comic-core/vite'
 export default defineConfig(({ command }) => ({
   plugins: [
